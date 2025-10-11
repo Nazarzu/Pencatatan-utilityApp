@@ -24,7 +24,7 @@ export default function Home() {
                         <Text className="font-medium">Pencatatan Utility</Text>
                         <Text className="font-medium">Halaman Utama</Text>
                     </View>
-                    <Text className="mt-8 font-bold text-2xl">Hi User👋</Text>
+                    <Text className="mt-8 font-bold text-2xl">Welcome👋</Text>
                     <View className="w-full py-4 mt-4 bg-gray-700 rounded-md px-4 flex-row justify-between items-center">
                         <View>
                             <Jam classname="text-white text-2xl font-bold"/>
@@ -37,7 +37,7 @@ export default function Home() {
                 </SafeAreaView>
             </ImageBackground>
             <View className="w-full h-10 backdrop-blur-sm bg-gray-600" />
-            <View className="w-full h-14 bottom-0 absolute bg-gray-800 backdrop-blur-2xl"/>
+            <View className="w-full h-14 bottom-0 absolute bg-gray-800 backdrop-blur-2xl hover:bg-gray-600 active:bg-gray-600"/>
         </View>
     );
 }

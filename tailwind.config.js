@@ -10,6 +10,7 @@ module.exports = {
     extend: {
       fontFamily: {
         'inter' : ["Inter_400Reguler"],
+        'inter-medium' : ["Inter_500Medium"],
         'inter-bold' : ["Inter_700Bold"],
       },
     },
