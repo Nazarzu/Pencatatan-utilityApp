@@ -1,0 +1,14 @@
+<View className="flex-1">
+    <View className="w-full h-10 backdrop-blur-sm bg-gray-600 absolute z-10" />
+    <SafeAreaView className="flex-1 bg-gray-100">
+        <KeyboardAwareScrollView extraScrollHeight={80} enableOnAndroid={true} keyboardOpeningTime={0} scrollEnabled={true} className="flex-1">
+            <ScrollView contentContainerStyle={{ padding: 14 }}>
+                <Image source={require("../../assets/images/logoas.png")} className="w-80 mx-auto h-24 rounded-md object-cover mb-8"></Image>
+                <View className="px-6 py-8 bg-white rounded-md shadow-md">
+                    <Text className="text-xl font-bold mb-4">Form Pencatatan ATS</Text>
+                </View>
+            </ScrollView>
+        </KeyboardAwareScrollView>
+    </SafeAreaView>
+    <View className="w-full h-14 bottom-0 absolute bg-gray-800 backdrop-blur-2xl"/>
+</View>

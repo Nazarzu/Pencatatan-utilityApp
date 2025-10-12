@@ -1,9 +1,10 @@
 import "../../global.css";
 import React, { useState } from "react";
-import { View, TextInput, Button, Alert, KeyboardAvoidingView, Platform, ScrollView, Text, TouchableOpacity, Image } from "react-native";
+import { View, TextInput, Alert, Platform, ScrollView, Text, TouchableOpacity, Image} from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbyOCL-IVVtprlEm2Yb9jNs4XRHErwtCqff4a2RoKQRiPc-nZnWLfbyLVfhsjl8KuQfQ/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwpZsA9I31y1Q-ZbKr8gfAJFZqZ1ARGEvQHdiRXldmyvRBkk3v2RCtqUX-4qRWSep7gwg/exec";
 
 const Genset = () => {
     const [status1, setStatus1] = useState("");
@@ -13,16 +14,19 @@ const Genset = () => {
     const [status3, setStatus3] = useState("");
     const [accu3, setAccu3] = useState("");
     const [keterangan, setKeterangan] = useState("");
-    const [petugas, setPetugas] = useState("");
+    const [petugas, setPetugas] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+    const [lainnya, setLainnya] = useState("");
+    const [showLainnyaInput, setShowLainnyaInput] = useState(false);
 
     const handleSubmit = async () => {
-        if( !status1 || !accu1 || !status2 || !accu2 || !status3 || !accu3 || !petugas) {
+        const petugasFinal = petugas === "Lainnya" ? lainnya.trim() : petugas
+        if( !status1 || !accu1 || !status2 || !accu2 || !status3 || !accu3 || !petugasFinal) {
             return Alert.alert("Harap isi semua kolom yang wajib (*).");
         }
         setLoading(true);
         try {
-            const payload = { status1, accu1, status2, accu2, status3, accu3, keterangan, petugas, api_key: "api_key_20251010_4f8c2e9b7a1d4c6e8f3a0b2d9e7c5a1f6b3d8c2e9f0a4b6d7c1e3f9a0b2d4c6"};
+            const payload = { status1, accu1, status2, accu2, status3, accu3, keterangan, petugas: petugasFinal, api_key: "api_key_20251010_4f8c2e9b7a1d4c6e8f3a0b2d9e7c5a1f6b3d8c2e9f0a4b6d7c1e3f9a0b2d4c6"};
 
             const res = await fetch(SCRIPT_URL, {
                 method: "POST",
@@ -33,7 +37,7 @@ const Genset = () => {
             const json = await res.json();
             if (json.status === "success") {
                 Alert.alert("Sukses", "Data tersimpan di Google Sheet");
-                setStatus1(""); setAccu1(""); setStatus2(""); setAccu2(""); setStatus3(""); setAccu3(""); setKeterangan(""); setPetugas(""); setLoading(false);
+                setStatus1(""); setAccu1(""); setStatus2(""); setAccu2(""); setStatus3(""); setAccu3(""); setKeterangan(""); setPetugas(""); setLainnya(""); setShowLainnyaInput(false);
             } else {
                 Alert.alert("Gagal", json.message || "Terjadi kesalahan");
             }
@@ -43,6 +47,8 @@ const Genset = () => {
             } else {
                 Alert.alert("Error", "Terjadi kesalahan tak dikenal");
             }
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -54,7 +60,7 @@ const Genset = () => {
         <View className="flex-1">
             <View className="w-full h-10 backdrop-blur-sm bg-gray-600 absolute z-10" />
             <SafeAreaView className="flex-1 bg-gray-100">
-                <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} className="flex-1">
+                <KeyboardAwareScrollView extraScrollHeight={80} enableOnAndroid={true} keyboardOpeningTime={0} scrollEnabled={true} className="flex-1">
                     <ScrollView contentContainerStyle={{ padding: 14 }}>
                         <Image source={require("../../assets/images/logoas.png")} className="w-80 mx-auto h-24 rounded-md object-cover mb-8"></Image>
                         <View className="px-6 py-8 bg-white rounded-md shadow-md">
@@ -73,7 +79,7 @@ const Genset = () => {
                                 <Text>Accu voltage {!accu1 && <Text className="text-red-500">*</Text>}</Text>
                                 <Text className="text-gray-500 text-xs">(genset 60 Kva)</Text>
                             </View>
-                            <TextInput value={accu1} onChangeText={setAccu1} placeholder="Masukan accu voltage..." className="border border-gray-300 placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500" />
+                            <TextInput value={accu1} onChangeText={setAccu1} placeholder="Masukan accu voltage..." className={`border ${accu1 ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500`} />
 
                             <Text className="mb-3">Status genset 800 Kva {!status2 && <Text className="text-red-500">*</Text>}</Text>
                             <View className="flex-row justify-between mb-4">
@@ -89,7 +95,7 @@ const Genset = () => {
                                 <Text>Accu voltage {!accu2 && <Text className="text-red-500">*</Text>}</Text>
                                 <Text className="text-gray-500 text-xs">(genset 800 Kva)</Text>
                             </View>
-                            <TextInput value={accu2} onChangeText={setAccu2} placeholder="Masukan accu voltage..." className="border border-gray-300 placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500"/>
+                            <TextInput value={accu2} onChangeText={setAccu2} placeholder="Masukan accu voltage..." className={`border ${accu2 ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500`} />
 
                             <Text className="mb-3">Status genset 1390 Kva {!status3 && <Text className="text-red-500">*</Text>}</Text>
                             <View className="flex-row justify-between mb-4">
@@ -105,20 +111,31 @@ const Genset = () => {
                                 <Text>Accu voltage {!accu3 && <Text className="text-red-500">*</Text>}</Text>
                                 <Text className="text-gray-500 text-xs">(genset 1390 Kva)</Text>
                             </View>
-                            <TextInput value={accu3} onChangeText={setAccu3} placeholder="Masukan accu voltage..." className="border border-gray-300 placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500"/>
+                            <TextInput value={accu3} onChangeText={setAccu3} placeholder="Masukan accu voltage..." className={`border ${accu3 ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500`} />
 
-                            <Text className="mb-3">Petugas {!petugas && <Text className="text-red-500">*</Text>}</Text>
+                            <Text>Petugas {!petugas && <Text className="text-red-500">*</Text>}</Text>
+                            <Text className="text-gray-600 mb-3 text-sm mt-1">
+                                Petugas dipilih:{" "}
+                                {petugas === "Lainnya" ? lainnya || "(belum diisi) *" : petugas || "-"}
+                            </Text>
                             <View className="flex-col gap-4 justify-between mb-4">
                                 {nama.map((item2) => (
-                                    <TouchableOpacity key={item2} onPress={() => setPetugas(item2)}  className={`flex-row items-center px-3 py-2 border rounded ${petugas === item2 ? "border-blue-500 bg-blue-100" : "border-gray-300"}`}>
+                                    <TouchableOpacity key={item2} onPress={() => {setPetugas(item2); setShowLainnyaInput(false); setLainnya("");}}  className={`flex-row items-center px-3 py-2 border rounded ${petugas === item2 ? "border-blue-500 bg-blue-100" : "border-gray-300"}`}>
                                         <View className={`w-4 h-4 mr-2 rounded-full border ${petugas === item2 ? "bg-blue-500 border-blue-500" : "border-gray-400"}`}/>
                                         <Text>{item2}</Text>
                                     </TouchableOpacity>
                                 ))}
+                                <TouchableOpacity onPress={() => {setPetugas("Lainnya"); setShowLainnyaInput(true);}} className={`flex-row items-center px-3 py-2 border rounded ${petugas === "Lainnya" ? "border-blue-500 bg-blue-100" : "border-gray-300"} `}>
+                                    <View className={`w-4 h-4 mr-2 rounded-full border ${petugas === "Lainnya" ? "bg-blue-500 border-blue-500" : "border-gray-400"}`} />
+                                    <Text>Lainnya</Text>
+                                </TouchableOpacity>
+                                {showLainnyaInput && (
+                                    <TextInput value={lainnya} onChangeText={(text) => setLainnya(text)} placeholder="Masukkan nama petugas lain..." className="border border-gray-300 rounded px-3 py-2 placeholder:text-gray-400" />
+                                )}
                             </View>
 
                             <Text className="mb-3">Keterangan</Text>
-                            <TextInput value={keterangan} onChangeText={setKeterangan} placeholder="Keterangan" multiline className="border border-gray-300 focus:border-blue-500 placeholder:text-gray-400 p-3 mb-4 rounded h-28 items-start text-justify" numberOfLines={5} textAlignVertical="top"/>
+                            <TextInput value={keterangan} onChangeText={setKeterangan} placeholder="Masukan keterangan..." multiline className={`border ${keterangan ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} focus:border-blue-500 placeholder:text-gray-400 p-3 mb-4 rounded h-28 items-start text-justify`} numberOfLines={5} textAlignVertical="top"/>
 
                             {/* <Button title={loading ? "Mengirim..." : "Kirim"} onPress={handleSubmit} disabled={loading}/> */}
                             <TouchableOpacity onPress={handleSubmit} disabled={loading} className="bg-gray-700 rounded py-2 mt-10 text-white font-inter-bold text-lg text-center w-full">
@@ -126,7 +143,7 @@ const Genset = () => {
                             </TouchableOpacity>
                         </View>
                     </ScrollView>
-                </KeyboardAvoidingView>
+                </KeyboardAwareScrollView>
             </SafeAreaView>
             <View className="w-full h-14 bottom-0 absolute bg-gray-800 backdrop-blur-2xl"/>
         </View>
