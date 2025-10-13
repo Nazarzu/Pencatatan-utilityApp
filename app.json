@@ -18,7 +18,8 @@
         "backgroundImage": "./assets/images/android-icon-background.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.nazaru.PencatatanutilityApp"
     },
     "web": {
       "output": "static",
@@ -26,6 +27,14 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+        "expo-navigation-bar",
+        {
+          "backgroundColor": "#1f2429",
+          "barStyle": "light-content",
+          "visible": true
+        }
+      ],
       "expo-router",
       [
         "expo-splash-screen",
