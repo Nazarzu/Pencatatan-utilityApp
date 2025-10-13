@@ -4,26 +4,28 @@ import { View, TextInput, Alert, Platform, ScrollView, Text, TouchableOpacity, I
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJqZpm5lDIW-Q6MC89L_q2WY4Dhwx8mrx6IbbDm61e68aNrfdlxjkhn5veFr0CXenKmw/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxzyyfChVGquJXDPZ7PIq172qh0nNT3lUcDuyVCUusL3CcHFYAD6-eiJ0AVYNw6PHze/exec";
 
-const InputCompressed = () => {
+const InputTrafo = () => {
 
-    const [status, setStatus] = useState("");
-    const [pressure, setPressure] = useState('');
+    const [ruangan, setRuangan] = useState("");
+    const [trafo, setTrafo] = useState("");
     const [keterangan, setKeterangan] = useState("");
     const [petugas, setPetugas] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [lainnya, setLainnya] = useState("");
-    const [showLainnyaInput, setShowLainnyaInput] = useState(false);
+    const [showLainnyaInput, setShowLainnyaInput] = useState(false)
+
+    const nama = ["EDI MURWANTO", "SUTORO", "ALIP A. RIYANTO", "MULYADI"];
 
     const handleSubmit = async () => {
         const petugasFinal = petugas === "Lainnya" ? lainnya.trim() : petugas
-        if( !status || !pressure || !petugasFinal) {
+        if( !ruangan || !trafo || !petugasFinal) {
             return Alert.alert("Harap isi semua kolom yang wajib (*).");
         }
         setLoading(true);
         try {
-            const payload = { status, pressure, keterangan, petugas: petugasFinal, api_key: "api_key_20251010_4f8c2e9b7a1d4c6e8f3a0b2d9e7c5a1f6b3d8c2e9f0a4b6d7c1e3f9a0b2d4c6"};
+            const payload = { ruangan, trafo, keterangan, petugas: petugasFinal, api_key: "api_key_20251010_4f8c2e9b7a1d4c6e8f3a0b2d9e7c5a1f6b3d8c2e9f0a4b6d7c1e3f9a0b2d4c6"};
 
             const res = await fetch(SCRIPT_URL, {
                 method: "POST",
@@ -34,7 +36,7 @@ const InputCompressed = () => {
             const json = await res.json();
             if (json.status === "success") {
                 Alert.alert("Sukses", "Data tersimpan di Google Sheet");
-                setStatus(""); setPressure(""); setKeterangan(""); setPetugas(""); setLainnya(""); setShowLainnyaInput(false);
+                setRuangan(""); setTrafo(""); setKeterangan(""); setPetugas(""); setLainnya(""); setShowLainnyaInput(false);
             } else {
                 Alert.alert("Gagal", json.message || "Terjadi kesalahan");
             }
@@ -49,9 +51,6 @@ const InputCompressed = () => {
         }
     };
 
-    const opsi = ["AUTO", "MANUAL", "OFF"];
-    const nama = ["EDI MURWANTO", "SUTORO", "ALIP A. RIYANTO", "MULYADI"];
-
     return (
         <View className="flex-1">
             <SafeAreaView className="flex-1 bg-gray-100">
@@ -59,20 +58,18 @@ const InputCompressed = () => {
                     <ScrollView contentContainerStyle={{ padding: 14 }}>
                         <Image source={require("../../assets/images/logoas.png")} className="w-80 mx-auto h-24 rounded-md object-cover mb-8"></Image>
                         <View className="px-6 py-8 bg-white rounded-md shadow-md">
-                            <Text className="text-xl font-bold mb-4">Form Compressed air</Text>
-                            <Text className="mb-3">Status {!status && <Text className="text-red-500">*</Text>}</Text>
-                            <View className="flex-row justify-between mb-4">
-                                {opsi.map((item) => (
-                                    <TouchableOpacity key={item} onPress={() => setStatus(item)} className={`flex-row items-center px-3 py-2 border rounded ${status === item ? "border-blue-500 bg-blue-100" : "border-gray-300"}`}>
-                                        <View className={`w-4 h-4 mr-2 rounded-full border ${status === item ? "bg-blue-500 border-blue-500" : "border-gray-400"}`}/>
-                                        <Text>{item}</Text>
-                                    </TouchableOpacity>
-                                ))}
-                            </View>
-                            <Text className="mb-3">pressure gauge {!pressure && <Text className="text-red-500">*</Text>}</Text>
-                            <TextInput value={pressure} onChangeText={setPressure} placeholder="Masukan pressure..." className={`border ${pressure ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500`} />
+                            <Text className="text-xl font-bold mb-4">Form Pencatatan Ruang Trafo</Text>
+
+                            <Text className="mb-3">Suhu ruangan {!ruangan && <Text className="text-red-500">*</Text>}</Text>
+                            <TextInput value={ruangan} onChangeText={setRuangan} placeholder="Masukan suhu ruangan.." className={`border ${ruangan ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500`} />
+                            
+                            <Text className="mb-3">Suhu trafo {!trafo && <Text className="text-red-500">*</Text>}</Text>
+                            <TextInput value={trafo} onChangeText={setTrafo} placeholder="Masukan suhu trafo..." className={`border ${trafo ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500`} />
+                            
+
                             <Text className="mb-3">Keterangan</Text>
                             <TextInput value={keterangan} onChangeText={setKeterangan} placeholder="Masukan keterangan..." multiline className={`border ${keterangan ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} focus:border-blue-500 placeholder:text-gray-400 p-3 mb-4 rounded h-28 items-start text-justify`} numberOfLines={5} textAlignVertical="top"/>
+
                             <Text>Petugas {!petugas && <Text className="text-red-500">*</Text>}</Text>
                             <Text className="text-gray-600 mb-3 text-sm mt-1">
                                 Petugas dipilih:{" "}
@@ -90,9 +87,10 @@ const InputCompressed = () => {
                                     <Text>Lainnya</Text>
                                 </TouchableOpacity>
                                 {showLainnyaInput && (
-                                    <TextInput value={lainnya} onChangeText={(text) => setLainnya(text)} placeholder="Masukkan nama petugas lain..." className="border border-gray-300 placeholder:text-gray-400 rounded px-3 py-2" />
+                                    <TextInput value={lainnya} onChangeText={(text) => setLainnya(text)} placeholder="Masukkan nama petugas lain..." className="border border-gray-300 rounded px-3 py-2 placeholder:text-gray-400" />
                                 )}
                             </View>
+
                             <TouchableOpacity onPress={handleSubmit} disabled={loading} className="bg-gray-700 rounded py-2 mt-10 text-white font-inter-bold text-lg text-center w-full">
                                 <Text className="text-white text-center font-inter-bold">{loading ? "Mengirim..." : "KIRIM"}</Text>
                             </TouchableOpacity> 
@@ -101,7 +99,7 @@ const InputCompressed = () => {
                 </KeyboardAwareScrollView>
             </SafeAreaView>
         </View>
-    );
-}
+    )
+};
 
-export default InputCompressed;
+export default InputTrafo;

@@ -1,12 +1,22 @@
 import "../global.css";
 import Jam from "../assets/waktu";
 import Tanggal from "../assets/Tanggal";
-import { View, Text, ImageBackground, Image } from 'react-native';
+import { View, Text, ImageBackground, Image, StatusBar} from 'react-native';
 import { Link } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/inter';
+import { useEffect } from 'react';
+import * as NavigationBar from 'expo-navigation-bar';
 
 export default function Home() {
+   useEffect(() => {
+    (async () => {
+        await NavigationBar.setVisibilityAsync("visible");
+        await NavigationBar.setBackgroundColorAsync('#0A2647');
+        await NavigationBar.setButtonStyleAsync('light');
+    })();
+    }, []);
+
     let [fontsLoaded] = useFonts({
         Inter_700Bold,
         Inter_400Regular,
@@ -18,6 +28,7 @@ export default function Home() {
     }
     return (
         <View className="flex-1">
+            <StatusBar backgroundColor="#32a852" barStyle="light-content" />
             <ImageBackground source={require("../assets/images/Background.jpg")} className="absolute w-full h-full" resizeMode="cover">
                 <SafeAreaView className="flex-1 px-6 py-6">
                     <View className="flex-row items-center justify-between">
@@ -35,9 +46,7 @@ export default function Home() {
                     <View className="flex-1" />
                     <Link href="/laporan" className="bg-gray-700 rounded py-2 mt-20 text-white font-inter-bold text-lg text-center w-full">MENU</Link>
                 </SafeAreaView>
-            </ImageBackground>
-            <View className="w-full h-10 backdrop-blur-sm bg-gray-600" />
-            <View className="w-full h-14 bottom-0 absolute bg-gray-800 backdrop-blur-2xl hover:bg-gray-600 active:bg-gray-600"/>
+            </ImageBackground>            
         </View>
     );
 }

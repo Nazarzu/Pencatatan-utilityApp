@@ -53,7 +53,6 @@ const InputAts = () => {
 
     return (
         <View className="flex-1">
-            <View className="w-full h-10 backdrop-blur-sm bg-gray-600 absolute z-10" />
             <SafeAreaView className="flex-1 bg-gray-100">
                 <KeyboardAwareScrollView extraScrollHeight={80} enableOnAndroid={true} keyboardOpeningTime={0} scrollEnabled={true} className="flex-1">
                     <ScrollView contentContainerStyle={{ padding: 14 }}>
@@ -98,7 +97,6 @@ const InputAts = () => {
                     </ScrollView>
                 </KeyboardAwareScrollView>
             </SafeAreaView>
-            <View className="w-full h-14 bottom-0 absolute bg-gray-800 backdrop-blur-2xl"/>
         </View>
     )
 };
