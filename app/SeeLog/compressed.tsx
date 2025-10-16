@@ -7,13 +7,15 @@ import { Link } from 'expo-router';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 interface AtsData {
-    Status: string;
+    Status : string;
+    Gauge : string;
     Keterangan: string;
     Petugas: string;
     Timestamp: string;
 }
 
-const Ats = () => {
+const Compressed = () => {
+
     const [data, setData] = useState<AtsData[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -42,8 +44,8 @@ const Ats = () => {
         const fetchData = async () => {
             try {
                 // 🔹 Ganti sheetId & sheetName sesuai milik kamu
-                const sheetId = "1HKX9EkWdYufhYuB53bnh_Jlc2Wguq6uiSHgOm37X_oQ";
-                const sheetName = "ATS";
+                const sheetId = "1ZIv2eXk4B7hMWENLilBndfJ8XOx21ExW25gBWWjtLpI";
+                const sheetName = "Sheet1";
                 const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
 
                 const res = await fetch(url);
@@ -55,7 +57,7 @@ const Ats = () => {
                     setLoading(false);
                     return;
                 }
-                    const defaultHeaders = ["Status", "Keterangan", "Petugas", "Timestamp"];
+                    const defaultHeaders = ["Status", "Pressure Gauge", "Keterangan", "Petugas", "Timestamp"];
                         const headers = (json.table.cols || []).map((col: any, i: number) => {
                         const label = col && col.label ? String(col.label).trim() : "";
                         return label !== "" ? label : (defaultHeaders[i] ?? `col_${i}`);
@@ -71,27 +73,32 @@ const Ats = () => {
                 });
 
                 const rows = rowsRaw.filter((r: any) => {
-                    const isEmpty = Object.values(r).every((v: any) => v === "" || v === null || v === undefined);
-                    const isHeaderRow = Object.keys(r).every((key, i) => 
-                        String(r[key]).trim().toLowerCase() === String(headers[i]).trim().toLowerCase()
+                    const isEmpty = Object.values(r).every(
+                        (v: any) => v === "" || v === null || v === undefined
                     );
+
+                    // Baris dianggap header jika sebagian besar kolom mirip header (misalnya 2 dari 3 cocok)
+                    const matchCount = Object.keys(r).reduce((count, key, i) => {
+                        const val = String(r[key]).trim().toLowerCase();
+                        const head = String(headers[i]).trim().toLowerCase();
+                        return count + (val === head ? 1 : 0);
+                    }, 0);
+                    const isHeaderRow = matchCount >= Math.floor(headers.length * 0.6);
+
                     return !isEmpty && !isHeaderRow;
                 });
 
-                const allEmpty = rows.length === 0 || rows.every((r: any) =>
-                    Object.values(r).every((v: any) => v === "" || v === null || v === undefined)
-                );
-
-                if (allEmpty) {
+                if (rows.length === 0) {
                     setData([]);
                     setLoading(false);
                     return;
                 }
 
                 const formattedData = rows.map((item: any) => ({
-                    Status: item.Status || "",
+                    Status: item.Status ?? "",
+                    Gauge: item["Pressure gauge"] ?? "",
                     Keterangan: item.Keterangan ?? "",
-                    Petugas: item.Petugas || "",
+                    Petugas: item.Petugas ?? "",
                     Timestamp: formatTimestamp(item.Timestamp),
                 }));
 
@@ -118,17 +125,19 @@ const Ats = () => {
             <Error error={error} />
         );
     }
-    return (
+
+    return(
         <View className="flex-1">
             <SafeAreaView className="flex-1 p-4 bg-gray-100">
                 <ScrollView className="mb-4">
                     <Image source={require("../../assets/images/logoas.png")} className="w-80 mx-auto h-24 rounded-md object-cover mb-8"></Image>
                     <View className="px-6 py-8 bg-white  shadow-md rounded-md">
-                        <Text className="text-lg font-bold">Data ATS</Text>
+                        <Text className="text-lg font-bold">Data Compressed Air</Text>
                         <ScrollView horizontal className="mt-4">
                             <View className="">
                                 <View className="flex-row bg-gray-200 rounded-t-md">
-                                    <Text className="px-5 py-4 font-medium w-36 text-left">Status</Text>
+                                    <Text className="px-5 py-4 font-medium w-32 text-left">Status</Text>
+                                    <Text className="px-5 py-4 font-medium w-52 text-left">Pressure Gauge</Text>
                                     <Text className="px-5 py-4 font-medium w-52 text-left">Keterangan</Text>
                                     <Text className="px-5 py-4 font-medium w-52 text-left">Petugas</Text>
                                     <Text className="px-5 py-4 font-medium w-48 text-left">Timestamp</Text>
@@ -139,7 +148,8 @@ const Ats = () => {
                                     ) : (
                                         data.map((item, index) => (
                                         <View key={index} className="flex-row border border-t-0 border-gray-100">
-                                            <Text className="px-5 py-4 w-36 text-left">{item.Status}</Text>
+                                            <Text className="px-5 py-4 w-32 text-left">{item.Status}</Text>
+                                            <Text className="px-5 py-4 w-52 text-justify">{item.Gauge}</Text>
                                             <Text className="px-5 py-4 w-52 text-justify">{item.Keterangan}</Text>
                                             <Text className="px-5 py-4 w-52 text-left">{item.Petugas}</Text>
                                             <Text className="px-5 py-4 w-48 text-left">{item.Timestamp}</Text>
@@ -157,4 +167,4 @@ const Ats = () => {
     );
 };
 
-export default Ats;
+export default Compressed;

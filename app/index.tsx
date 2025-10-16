@@ -4,28 +4,10 @@ import Tanggal from "../assets/Tanggal";
 import { View, Text, ImageBackground, Image, StatusBar} from 'react-native';
 import { Link } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/inter';
-import { useEffect } from 'react';
-import * as NavigationBar from 'expo-navigation-bar';
+import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
+
 
 export default function Home() {
-   useEffect(() => {
-    (async () => {
-        await NavigationBar.setVisibilityAsync("visible");
-        await NavigationBar.setBackgroundColorAsync('#0A2647');
-        await NavigationBar.setButtonStyleAsync('light');
-    })();
-    }, []);
-
-    let [fontsLoaded] = useFonts({
-        Inter_700Bold,
-        Inter_400Regular,
-        Inter_500Medium,
-    });
-
-    if (!fontsLoaded) {
-        return null;
-    }
     return (
         <View className="flex-1">
             <StatusBar backgroundColor="#32a852" barStyle="light-content" />
@@ -44,7 +26,7 @@ export default function Home() {
                         <Image source={require("../assets/images/Profile.png")} className="bg-black w-12 h-12 rounded-md object-cover"></Image>
                     </View>
                     <View className="flex-1" />
-                    <Link href="/laporan" className="bg-gray-700 rounded py-2 mt-20 text-white font-inter-bold text-lg text-center w-full">MENU</Link>
+                    <Link href="/laporan" className="bg-gray-700 rounded py-2 mt-20 text-white font-bold text-lg text-center w-full">MENU</Link>
                 </SafeAreaView>
             </ImageBackground>            
         </View>
