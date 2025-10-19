@@ -57,7 +57,7 @@ const PDAM = () => {
                     setLoading(false);
                     return;
                 }
-                    const defaultHeaders = ["Status Pompa", "Stand meter awal", "Stand meter akhir", "Keterangan", "Petugas", "Timestamp"];
+                    const defaultHeaders = ["Status Pompa" , "Stand meter awal", "Stand meter akhir","Keterangan", "Petugas", "Timestamp"];
                         const headers = (json.table.cols || []).map((col: any, i: number) => {
                         const label = col && col.label ? String(col.label).trim() : "";
                         return label !== "" ? label : (defaultHeaders[i] ?? `col_${i}`);
@@ -72,21 +72,9 @@ const PDAM = () => {
                     return obj;
                 });
 
-                const rows = rowsRaw.filter((r: any) => {
-                    const isEmpty = Object.values(r).every(
-                        (v: any) => v === "" || v === null || v === undefined
-                    );
-
-                    // Baris dianggap header jika sebagian besar kolom mirip header (misalnya 2 dari 3 cocok)
-                    const matchCount = Object.keys(r).reduce((count, key, i) => {
-                        const val = String(r[key]).trim().toLowerCase();
-                        const head = String(headers[i]).trim().toLowerCase();
-                        return count + (val === head ? 1 : 0);
-                    }, 0);
-                    const isHeaderRow = matchCount >= Math.floor(headers.length * 0.6);
-
-                    return !isEmpty && !isHeaderRow;
-                });
+                const rows = rowsRaw.slice(1).filter((r: any) =>
+                   Object.values(r).some((v: any) => v !== "" && v !== null && v !== undefined)
+                );
 
                 if (rows.length === 0) {
                     setData([]);
@@ -99,7 +87,7 @@ const PDAM = () => {
                     Awal: item["Stand meter awal"] ?? "",
                     Akhir: item["Stand meter akhir"] ?? "",
                     Keterangan: item.Keterangan ?? "",
-                    Petugas: item.Petugas ?? "",
+                    Petugas: item.Petugas || "",
                     Timestamp: formatTimestamp(item.Timestamp),
                 }));
 
@@ -137,7 +125,7 @@ const PDAM = () => {
                         <ScrollView horizontal className="mt-4">
                             <View className="">
                                 <View className="flex-row bg-gray-200 rounded-t-md">
-                                    <Text className="px-5 py-4 font-medium w-40 text-left">Stok Pompa</Text>
+                                    <Text className="px-5 py-4 font-medium w-40 text-left">Status Pompa</Text>
                                     <Text className="px-5 py-4 font-medium w-48 text-left">Stand meter awal</Text>
                                     <Text className="px-5 py-4 font-medium w-52 text-left">Stand meter akhir</Text>
                                     <Text className="px-5 py-4 font-medium w-52 text-left">Keterangan</Text>
