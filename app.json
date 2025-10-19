@@ -1,21 +1,20 @@
 {
   "expo": {
-    "name": "Pencatatan-utilityApp",
-    "slug": "Pencatatan-utilityApp",
+    "name": "Loglist",
+    "slug": "Loglist",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/adaptive-icon.png",
     "scheme": "pencatatanutilityapp",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundImage": "./assets/images/android-icon-background.png"
+        "backgroundColor": "#f5f6f7",
+        "foregroundImage": "./assets/images/adaptive-icon.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,

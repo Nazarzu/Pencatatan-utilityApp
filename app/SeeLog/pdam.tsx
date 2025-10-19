@@ -7,15 +7,15 @@ import { Link } from 'expo-router';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 interface AtsData {
-    Status: string;
-    Awal: string;
-    Akhir: string;
+    Status : string;
+    Awal : string;
+    Akhir : string;
     Keterangan: string;
     Petugas: string;
     Timestamp: string;
 }
 
-const Deepwell = () => {
+const PDAM = () => {
     const [data, setData] = useState<AtsData[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -44,8 +44,8 @@ const Deepwell = () => {
         const fetchData = async () => {
             try {
                 // 🔹 Ganti sheetId & sheetName sesuai milik kamu
-                const sheetId = "1-Cd9Ext3-KEv1qyO7kLOBHWef_BiJR21h6Ny6J8D3uM";
-                const sheetName = "Deepwell";
+                const sheetId = "1TanC9id3rXFdGrRP0rt1hWttKWaL1jUsZxO_JiijzJ4";
+                const sheetName = "PDAM";
                 const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
 
                 const res = await fetch(url);
@@ -57,7 +57,7 @@ const Deepwell = () => {
                     setLoading(false);
                     return;
                 }
-                    const defaultHeaders = ["Status Pompa Deepwell 1", "Stand meter awal", "Stand meter akhir", "Keterangan", "Petugas", "Timestamp"];
+                    const defaultHeaders = ["Status Pompa", "Stand meter awal", "Stand meter akhir", "Keterangan", "Petugas", "Timestamp"];
                         const headers = (json.table.cols || []).map((col: any, i: number) => {
                         const label = col && col.label ? String(col.label).trim() : "";
                         return label !== "" ? label : (defaultHeaders[i] ?? `col_${i}`);
@@ -95,7 +95,7 @@ const Deepwell = () => {
                 }
 
                 const formattedData = rows.map((item: any) => ({
-                    Status: item["Status Pompa Deepwell 1"] ?? "",
+                    Status: item["Status Pompa"] ?? "",
                     Awal: item["Stand meter awal"] ?? "",
                     Akhir: item["Stand meter akhir"] ?? "",
                     Keterangan: item.Keterangan ?? "",
@@ -133,13 +133,13 @@ const Deepwell = () => {
                 <ScrollView className="mb-4">
                     <Image source={require("../../assets/images/logoas.png")} className="w-80 mx-auto h-24 rounded-md object-cover mb-8"></Image>
                     <View className="px-6 py-8 bg-white  shadow-md rounded-md">
-                        <Text className="text-lg font-bold">Data Deepwell 1</Text>
+                        <Text className="text-lg font-bold">Data PDAM</Text>
                         <ScrollView horizontal className="mt-4">
                             <View className="">
                                 <View className="flex-row bg-gray-200 rounded-t-md">
-                                    <Text className="px-5 py-4 font-medium w-56 text-left">Status Pompa Deepwell 1</Text>
-                                    <Text className="px-5 py-4 font-medium w-48 text-left">Stand Meter Awal</Text>
-                                    <Text className="px-5 py-4 font-medium w-48 text-left">Stand Meter Akhir</Text>
+                                    <Text className="px-5 py-4 font-medium w-40 text-left">Stok Pompa</Text>
+                                    <Text className="px-5 py-4 font-medium w-48 text-left">Stand meter awal</Text>
+                                    <Text className="px-5 py-4 font-medium w-52 text-left">Stand meter akhir</Text>
                                     <Text className="px-5 py-4 font-medium w-52 text-left">Keterangan</Text>
                                     <Text className="px-5 py-4 font-medium w-52 text-left">Petugas</Text>
                                     <Text className="px-5 py-4 font-medium w-48 text-left">Timestamp</Text>
@@ -150,9 +150,9 @@ const Deepwell = () => {
                                     ) : (
                                         data.map((item, index) => (
                                         <View key={index} className="flex-row border border-t-0 border-gray-100">
-                                            <Text className="px-5 py-4 w-56 text-left">{item.Status}</Text>
+                                            <Text className="px-5 py-4 w-40 text-left">{item.Status}</Text>
                                             <Text className="px-5 py-4 w-48 text-justify">{item.Awal}</Text>
-                                            <Text className="px-5 py-4 w-48 text-justify">{item.Akhir}</Text>
+                                            <Text className="px-5 py-4 w-52 text-justify">{item.Akhir}</Text>
                                             <Text className="px-5 py-4 w-52 text-justify">{item.Keterangan}</Text>
                                             <Text className="px-5 py-4 w-52 text-left">{item.Petugas}</Text>
                                             <Text className="px-5 py-4 w-48 text-left">{item.Timestamp}</Text>
@@ -167,7 +167,7 @@ const Deepwell = () => {
                 <Link href="/loglist" className="bg-gray-700 rounded py-2 text-white font-bold text-lg text-center w-full">BACK</Link>
             </SafeAreaView>
         </View>
-    );
+    )
 };
 
-export default Deepwell;
+export default PDAM;

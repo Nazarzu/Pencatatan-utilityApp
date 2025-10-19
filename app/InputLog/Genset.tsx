@@ -4,7 +4,7 @@ import { View, TextInput, Alert, Platform, ScrollView, Text, TouchableOpacity, I
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyNLy9FKlR-Znok4KtnVaZK0z401GBbfQ-gYlALUhk9EXJH26DFk4U8wMctSdIrOjnGZA/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyY3IGMxY3DN2SKecAWIRraW59PGktIu_HgTNlszRdHDpqs4agF3D31PtWbhgBrouytdg/exec";
 
 const Genset = () => {
     const [tipe, setTipe] = useState("");
@@ -20,14 +20,35 @@ const Genset = () => {
     const [lainnya, setLainnya] = useState("");
     const [showLainnyaInput, setShowLainnyaInput] = useState(false);
 
+    const getMaxSolar = () => {
+        if (tipe === "genset 60 kva") return 50;
+        if (tipe === "genset 800 kva") return 500;
+        if (tipe === "genset 1390 kva") return 1200;
+        return 0;
+    }
+
     const handleSubmit = async () => {
+        const value = parseInt(solar);
+
         const petugasFinal = petugas === "Lainnya" ? lainnya.trim() : petugas
-        if( !tipe || !status || !accu|| !air || !oil || !radiator || !petugasFinal) {
+        if( !tipe || !solar || !status || !accu|| !air || !oil || !radiator || !petugasFinal) {
+            if(!tipe) {
+                Alert.alert("Pilih jenis genset terlebih dahulu!");
+                return;
+            }
             return Alert.alert("Harap isi semua kolom yang wajib (*).");
+        }
+        if (isNaN(value) || value < 0 || value > getMaxSolar()) {
+            Alert.alert(
+                "Input tidak valid",
+                `Solar harus antara 0 - ${getMaxSolar()}L untuk ${tipe}`
+            );
+            return;
         }
         setLoading(true);
         try {
-            const payload = { tipe, status, accu, air, oil, radiator, keterangan, petugas: petugasFinal, api_key: "api_key_20251010_4f8c2e9b7a1d4c6e8f3a0b2d9e7c5a1f6b3d8c2e9f0a4b6d7c1e3f9a0b2d4c6"};
+            const solarWithUnit = `${value}L`;
+            const payload = { tipe, status, accu, air, oil, radiator, solar: solarWithUnit, keterangan, petugas: petugasFinal, api_key: "api_key_20251010_4f8c2e9b7a1d4c6e8f3a0b2d9e7c5a1f6b3d8c2e9f0a4b6d7c1e3f9a0b2d4c6"};
 
             const res = await fetch(SCRIPT_URL, {
                 method: "POST",
@@ -38,7 +59,7 @@ const Genset = () => {
             const json = await res.json();
             if (json.status === "success") {
                 Alert.alert("Sukses", "Data tersimpan di Google Sheet");
-                setTipe(""); setStatus(""); setAccu(""); setAir(""); setOil(""); setRadiator(""); setKeterangan(""); setPetugas(""); setLainnya(""); setShowLainnyaInput(false);
+                setTipe(""); setStatus(""); setAccu(""); setAir(""); setOil(""); setRadiator(""); setSolar(""); setKeterangan(""); setPetugas(""); setLainnya(""); setShowLainnyaInput(false);
             } else {
                 Alert.alert("Gagal", json.message || "Terjadi kesalahan");
             }
@@ -100,8 +121,8 @@ const Genset = () => {
                             <Text className="mb-3">Level air radiator genset {!radiator && <Text className="text-red-500">*</Text>}</Text>
                             <TextInput value={radiator} onChangeText={setRadiator} placeholder="Masukan level air radiator..." className={`border ${radiator ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500`} />
 
-                            <Text className="mb-3">Level air radiator genset {!radiator && <Text className="text-red-500">*</Text>}</Text>
-                            <TextInput value={radiator} onChangeText={setRadiator} placeholder="Masukan level air radiator..." className={`border ${radiator ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500`} />
+                            <Text className="mb-3">Stok Solar (Max: {getMaxSolar()}L) {!solar && <Text className="text-red-500">*</Text>}</Text>
+                            <TextInput value={solar} keyboardType="numeric" onChangeText={(text) => {const clean = text.replace(/[^0-9]/g, ""); const val = parseInt(clean || "0"); const max = getMaxSolar(); if (val <= max) setSolar(clean)}} placeholder="Masukan jumlah solar..." className={`border ${solar ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500`} />
 
                             <Text className="mb-3">Keterangan</Text>
                             <TextInput value={keterangan} onChangeText={setKeterangan} placeholder="Masukan keterangan..." multiline className={`border ${keterangan ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} focus:border-blue-500 placeholder:text-gray-400 p-3 mb-4 rounded h-28 items-start text-justify`} numberOfLines={5} textAlignVertical="top"/>
