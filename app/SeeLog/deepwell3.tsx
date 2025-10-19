@@ -137,7 +137,7 @@ const Deepwell3 = () => {
                         <ScrollView horizontal className="mt-4">
                             <View className="">
                                 <View className="flex-row bg-gray-200 rounded-t-md">
-                                    <Text className="px-5 py-4 font-medium w-56 text-left">Status Pompa Deepwell 3</Text>
+                                    <Text className="px-5 py-4 font-medium w-60 text-left">Status Pompa Deepwell 3</Text>
                                     <Text className="px-5 py-4 font-medium w-48 text-left">Stand Meter Awal</Text>
                                     <Text className="px-5 py-4 font-medium w-48 text-left">Stand Meter Akhir</Text>
                                     <Text className="px-5 py-4 font-medium w-52 text-left">Keterangan</Text>
@@ -150,7 +150,7 @@ const Deepwell3 = () => {
                                     ) : (
                                         data.map((item, index) => (
                                         <View key={index} className="flex-row border border-t-0 border-gray-100">
-                                            <Text className="px-5 py-4 w-56 text-left">{item.Status}</Text>
+                                            <Text className="px-5 py-4 w-60 text-left">{item.Status}</Text>
                                             <Text className="px-5 py-4 w-48 text-justify">{item.Awal}</Text>
                                             <Text className="px-5 py-4 w-48 text-justify">{item.Akhir}</Text>
                                             <Text className="px-5 py-4 w-52 text-justify">{item.Keterangan}</Text>

@@ -57,24 +57,28 @@ const PDAM = () => {
                     setLoading(false);
                     return;
                 }
-                    const defaultHeaders = ["Status Pompa" , "Stand meter awal", "Stand meter akhir","Keterangan", "Petugas", "Timestamp"];
+                    const defaultHeaders = ["Status Pompa" , "Stand meter awal", "Stand meter akhir", "Keterangan", "Petugas", "Timestamp"];
                         const headers = (json.table.cols || []).map((col: any, i: number) => {
                         const label = col && col.label ? String(col.label).trim() : "";
                         return label !== "" ? label : (defaultHeaders[i] ?? `col_${i}`);
                     });
 
-                    const rowsRaw = (json.table.rows || []).map((row: any) => {
-                    const obj: any = {};
-                    for (let i = 0; i < headers.length; i++) {
-                        const cell = (row && row.c && row.c[i]) ? row.c[i] : null;
-                        obj[headers[i]] = (cell && cell.v !== null && cell.v !== undefined) ? cell.v : "";
-                    }
+                    const rowsRaw = (json.table.rows || [])
+                    .filter((row: any) => row.c && row.c.length > 0)
+                    .map((row: any) => {
+                        const obj: any = {};
+                        for (let i = 0; i < headers.length; i++) {
+                            const cell = (row && row.c && row.c[i]) ? row.c[i] : null;
+                            obj[headers[i]] = (cell && cell.v !== null && cell.v !== undefined) ? cell.v : "";
+                        }
                     return obj;
-                });
+                }).filter((row: any) => row["Status Pompa"] !== "Status Pompa" && row["Stand meter awal"] !== "Stand meter awal");
+                
 
-                const rows = rowsRaw.slice(1).filter((r: any) =>
-                   Object.values(r).some((v: any) => v !== "" && v !== null && v !== undefined)
+                const rows = rowsRaw.filter((r: any) =>
+                    Object.values(r).some((v: any) => v !== "" && v !== null && v !== undefined)
                 );
+
 
                 if (rows.length === 0) {
                     setData([]);

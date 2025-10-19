@@ -66,7 +66,7 @@ const InputCO2 = () => {
                             <Text className="mb-3">Stok tabung kosong {!kosong && <Text className="text-red-500">*</Text>}</Text>
                             <TextInput value={kosong} onChangeText={setKosong} placeholder="Masukan stok..." className={`border ${kosong ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500`} />
 
-                            <Text className="mb-3">pressure gauge {!preasure && <Text className="text-red-500">*</Text>}</Text>
+                            <Text className="mb-3">Pressure gauge {!preasure && <Text className="text-red-500">*</Text>}</Text>
                             <TextInput value={preasure} onChangeText={setPreasure} placeholder="Masukan pressure..." className={`border ${preasure ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500`} />
 
                             <Text className="mb-3">Keterangan</Text>

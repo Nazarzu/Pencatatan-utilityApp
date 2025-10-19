@@ -64,7 +64,7 @@ const InputDeepwell = () => {
                         <View className="px-6 py-8 bg-white rounded-md shadow-md">
                             <Text className="text-xl font-bold mb-4">Form Pencatatan Deepwell</Text>
 
-                            <Text className="mb-4">Pilih genset {!tipe && <Text className="text-red-500">*</Text>}</Text>
+                            <Text className="mb-4">Pilih Deepwell {!tipe && <Text className="text-red-500">*</Text>}</Text>
                             <View className="flex-col gap-4 justify-between mb-4">
                                 {opsi2.map((item3) => (
                                     <TouchableOpacity key={item3} onPress={() => setTipe(item3)}  className={`flex-row items-center px-3 py-2 border rounded ${tipe === item3 ? "border-blue-500 bg-blue-100" : "border-gray-300"}`}>
@@ -74,7 +74,7 @@ const InputDeepwell = () => {
                                 ))}
                             </View>
 
-                            <Text className="mb-3">Status Deepwell 1 {!pompa && <Text className="text-red-500">*</Text>}</Text>
+                            <Text className="mb-3">Status Deepwell {!pompa && <Text className="text-red-500">*</Text>}</Text>
                             <View className="flex-row justify-between mb-4">
                                 {opsi.map((item) => (
                                     <TouchableOpacity key={item} onPress={() => setPompa(item)}  className={`flex-row items-center px-3 py-2 border rounded ${pompa === item ? "border-blue-500 bg-blue-100" : "border-gray-300"}`}>

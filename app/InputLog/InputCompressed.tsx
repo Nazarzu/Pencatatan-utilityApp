@@ -69,7 +69,7 @@ const InputCompressed = () => {
                                     </TouchableOpacity>
                                 ))}
                             </View>
-                            <Text className="mb-3">pressure gauge {!pressure && <Text className="text-red-500">*</Text>}</Text>
+                            <Text className="mb-3">Pressure gauge {!pressure && <Text className="text-red-500">*</Text>}</Text>
                             <TextInput value={pressure} onChangeText={setPressure} placeholder="Masukan pressure..." className={`border ${pressure ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500`} />
                             <Text className="mb-3">Keterangan</Text>
                             <TextInput value={keterangan} onChangeText={setKeterangan} placeholder="Masukan keterangan..." multiline className={`border ${keterangan ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} focus:border-blue-500 placeholder:text-gray-400 p-3 mb-4 rounded h-28 items-start text-justify`} numberOfLines={5} textAlignVertical="top"/>
