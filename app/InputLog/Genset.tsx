@@ -4,7 +4,7 @@ import { View, TextInput, Alert, Platform, ScrollView, Text, TouchableOpacity, I
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyY3IGMxY3DN2SKecAWIRraW59PGktIu_HgTNlszRdHDpqs4agF3D31PtWbhgBrouytdg/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxrAAOAg5alMjGOT0yCr9yGWxRapZvVSxZShIYnA40xuJoFIwaF_O7tRxKE1AGk1G8wvA/exec";
 
 const Genset = () => {
     const [tipe, setTipe] = useState("");
@@ -14,6 +14,7 @@ const Genset = () => {
     const [oil, setOil] = useState("");
     const [radiator, setRadiator] = useState("");
     const [solar, setSolar] = useState("");
+    const [meter, setMeter] = useState("");
     const [keterangan, setKeterangan] = useState("");
     const [petugas, setPetugas] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
@@ -48,7 +49,7 @@ const Genset = () => {
         setLoading(true);
         try {
             const solarWithUnit = `${value}L`;
-            const payload = { tipe, status, accu, air, oil, radiator, solar: solarWithUnit, keterangan, petugas: petugasFinal, api_key: "api_key_20251010_4f8c2e9b7a1d4c6e8f3a0b2d9e7c5a1f6b3d8c2e9f0a4b6d7c1e3f9a0b2d4c6"};
+            const payload = { tipe, status, accu, air, oil, radiator, solar: solarWithUnit, meter, keterangan, petugas: petugasFinal, api_key: "api_key_20251010_4f8c2e9b7a1d4c6e8f3a0b2d9e7c5a1f6b3d8c2e9f0a4b6d7c1e3f9a0b2d4c6"};
 
             const res = await fetch(SCRIPT_URL, {
                 method: "POST",
@@ -59,7 +60,7 @@ const Genset = () => {
             const json = await res.json();
             if (json.status === "success") {
                 Alert.alert("Sukses", "Data tersimpan di Google Sheet");
-                setTipe(""); setStatus(""); setAccu(""); setAir(""); setOil(""); setRadiator(""); setSolar(""); setKeterangan(""); setPetugas(""); setLainnya(""); setShowLainnyaInput(false);
+                setTipe(""); setStatus(""); setAccu(""); setAir(""); setOil(""); setRadiator(""); setSolar(""); setMeter(""); setKeterangan(""); setPetugas(""); setLainnya(""); setShowLainnyaInput(false);
             } else {
                 Alert.alert("Gagal", json.message || "Terjadi kesalahan");
             }
@@ -123,6 +124,9 @@ const Genset = () => {
 
                             <Text className="mb-3">Stok Solar (Max: {getMaxSolar()}L) {!solar && <Text className="text-red-500">*</Text>}</Text>
                             <TextInput value={solar} keyboardType="numeric" onChangeText={(text) => {const clean = text.replace(/[^0-9]/g, ""); const val = parseInt(clean || "0"); const max = getMaxSolar(); if (val <= max) setSolar(clean)}} placeholder="Masukan jumlah solar..." className={`border ${solar ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500`} />
+
+                            <Text className="mb-3">Hour Meter</Text>
+                            <TextInput value={meter} keyboardType="numeric" onChangeText={setMeter} placeholder="Masukan hour meter..." className={`border ${meter ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500`} />
 
                             <Text className="mb-3">Keterangan</Text>
                             <TextInput value={keterangan} onChangeText={setKeterangan} placeholder="Masukan keterangan..." multiline className={`border ${keterangan ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} focus:border-blue-500 placeholder:text-gray-400 p-3 mb-4 rounded h-28 items-start text-justify`} numberOfLines={5} textAlignVertical="top"/>

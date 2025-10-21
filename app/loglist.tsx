@@ -96,7 +96,13 @@ const Loglist = () => {
                             </Link>
                             <Link href="/SeeLog/lvmdb" className="bg-white rounded-md text-lg w-full basis-[48%] shadow-md">
                                 <View className="flex-row items-center justify-between w-full py-4 pl-4 pr-1">
-                                    <Text className="text-base font-medium text-gray-700">LVMDB</Text>
+                                    <Text className="text-base font-medium text-gray-700">LVMDB 1</Text>
+                                    <Svg width="22"  height="22"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="1.5"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right"><Path stroke="none" d="M0 0h24v24H0z" fill="none"/><Path d="M9 6l6 6l-6 6" /></Svg>
+                                </View>
+                            </Link>
+                            <Link href="/SeeLog/lvmdb2" className="bg-white rounded-md text-lg w-full basis-[48%] shadow-md">
+                                <View className="flex-row items-center justify-between w-full py-4 pl-4 pr-1">
+                                    <Text className="text-base font-medium text-gray-700">LVMDB 2</Text>
                                     <Svg width="22"  height="22"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="1.5"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right"><Path stroke="none" d="M0 0h24v24H0z" fill="none"/><Path d="M9 6l6 6l-6 6" /></Svg>
                                 </View>
                             </Link>

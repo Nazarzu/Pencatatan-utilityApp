@@ -7,6 +7,7 @@ import { Link } from 'expo-router';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 interface AtsData {
+    Meter: string;
     Status: string;
     Accu: string;
     Air: string;
@@ -61,7 +62,7 @@ const Genset3 = () => {
                     return;
                 }
                     const defaultHeaders = ["Status Genset 1390 Kva", "Accu Voltage", "Level Air Accu Genset", "Level Oil Genset", 
-                                            "Level air Radiator Genset", "Stok solar / max 1200L", "Keterangan", "Petugas", "Timestamp"];
+                                            "Level air Radiator Genset", "Stok solar / max 1200L", "Hour Meter", "Keterangan", "Petugas", "Timestamp"];
                         const headers = (json.table.cols || []).map((col: any, i: number) => {
                         const label = col && col.label ? String(col.label).trim() : "";
                         return label !== "" ? label : (defaultHeaders[i] ?? `col_${i}`);
@@ -105,6 +106,7 @@ const Genset3 = () => {
                     Oil: item["Level Oil Genset"] ?? "",
                     Radiator: item["Level air Radiator Genset"] ?? "",
                     Solar: item["Stok solar / max 1200L"] ?? "",
+                    Meter: item["Hour Meter"] ?? "",
                     Keterangan: item.Keterangan ?? "",
                     Petugas: item.Petugas || "",
                     Timestamp: formatTimestamp(item.Timestamp),

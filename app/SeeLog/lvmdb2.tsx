@@ -47,7 +47,7 @@ const LVMDB = () => {
             try {
                 // 🔹 Ganti sheetId & sheetName sesuai milik kamu
                 const sheetId = "13WegW6BdWld_MQwWKxLJr0o8jaKk7b0yavc33ZcRmyo";
-                const sheetName = "LVMDB1";
+                const sheetName = "LVMDB2";
                 const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
 
                 const res = await fetch(url);
@@ -139,7 +139,7 @@ const LVMDB = () => {
                 <ScrollView className="mb-4">
                     <Image source={require("../../assets/images/logoas.png")} className="w-80 mx-auto h-24 rounded-md object-cover mb-8"></Image>
                     <View className="px-6 py-8 bg-white  shadow-md rounded-md">
-                        <Text className="text-lg font-bold">Data LVMDB 1</Text>
+                        <Text className="text-lg font-bold">Data LVMDB 2</Text>
                         <ScrollView horizontal className="mt-4">
                             <View className="">
                                 <View className="flex-row bg-gray-200 rounded-t-md">

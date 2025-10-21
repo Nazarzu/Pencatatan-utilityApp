@@ -4,10 +4,11 @@ import { View, TextInput, Alert, Platform, ScrollView, Text, TouchableOpacity, I
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby5lCb7f0fvQUy1YrmWFCxmHoqMWBucRWrAm2Ky4-GPjto7AwLehBf6jVwbpi1eVgaV/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_WynrhlwJ8w_x0Zv8Y5EkXfhz7tgODHqcX8EuTzrgFU19R6lw8XySbMzHACbX1ZpC/exec";
 
 const InputLVMDB = () => {
 
+    const [tipe, setTipe] = useState("");
     const [ampere1, setAmpere1] = useState("");
     const [ampere2, setAmpere2] = useState("");
     const [ampere3, setAmpere3] = useState("");
@@ -20,15 +21,20 @@ const InputLVMDB = () => {
     const [showLainnyaInput, setShowLainnyaInput] = useState(false);
     
     const nama = ["EDI MURWANTO", "SUTORO", "ALIP A. RIYANTO", "MULYADI"];
+    const opsi = ["LVMDB1", "LVMDB2"]
 
     const handleSubmit = async () => {
         const petugasFinal = petugas === "Lainnya" ? lainnya.trim() : petugas
-        if(  !ampere1 || !ampere2 || !ampere3 || !voltage || !hz || !petugasFinal) {
+        if( !tipe || !ampere1 || !ampere2 || !ampere3 || !voltage || !hz || !petugasFinal) {
+             if(!tipe) {
+                Alert.alert("Pilih jenis LVMDB terlebih dahulu!");
+                return;
+            }
             return Alert.alert("Harap isi semua kolom yang wajib (*).");
         }
         setLoading(true);
         try {
-            const payload = {  ampere1, ampere2, ampere3, voltage, hz, keterangan, petugas: petugasFinal, api_key: "api_key_20251010_4f8c2e9b7a1d4c6e8f3a0b2d9e7c5a1f6b3d8c2e9f0a4b6d7c1e3f9a0b2d4c6"};
+            const payload = {  tipe, ampere1, ampere2, ampere3, voltage, hz, keterangan, petugas: petugasFinal, api_key: "api_key_20251010_4f8c2e9b7a1d4c6e8f3a0b2d9e7c5a1f6b3d8c2e9f0a4b6d7c1e3f9a0b2d4c6"};
 
             const res = await fetch(SCRIPT_URL, {
                 method: "POST",
@@ -39,7 +45,7 @@ const InputLVMDB = () => {
             const json = await res.json();
             if (json.status === "success") {
                 Alert.alert("Sukses", "Data tersimpan di Google Sheet");
-                setAmpere1(""); setAmpere2(""); setAmpere3(""); setVoltage(""); setHz(""); setKeterangan(""); setPetugas(""); setLainnya(""); setShowLainnyaInput(false);
+                setTipe(""); setAmpere1(""); setAmpere2(""); setAmpere3(""); setVoltage(""); setHz(""); setKeterangan(""); setPetugas(""); setLainnya(""); setShowLainnyaInput(false);
             } else {
                 Alert.alert("Gagal", json.message || "Terjadi kesalahan");
             }
@@ -63,6 +69,16 @@ const InputLVMDB = () => {
                         <View className="px-6 py-8 bg-white rounded-md shadow-md">
                             <Text className="text-xl font-bold mb-4">Form Pencatatan LVMDB</Text>
 
+                            <Text className="mb-4">Pilih LVMDB {!tipe && <Text className="text-red-500">*</Text>}</Text>
+                            <View className="flex-col gap-4 justify-between mb-4">
+                                {opsi.map((item3) => (
+                                    <TouchableOpacity key={item3} onPress={() => setTipe(item3)}  className={`flex-row items-center px-3 py-2 border rounded ${tipe === item3 ? "border-blue-500 bg-blue-100" : "border-gray-300"}`}>
+                                        <View className={`w-4 h-4 mr-2 rounded-full border ${tipe === item3 ? "bg-blue-500 border-blue-500" : "border-gray-400"}`}/>
+                                        <Text>{item3}</Text>
+                                    </TouchableOpacity>
+                                ))}
+                            </View>
+                            
                             <Text className="mb-3">Ampere R {!ampere1 && <Text className="text-red-500">*</Text>}</Text>
                             <TextInput value={ampere1} onChangeText={setAmpere1} placeholder="Masukan ampere R..." className={`border ${ampere1 ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500`} />
 

@@ -7,6 +7,7 @@ import { Link } from 'expo-router';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 interface AtsData {
+    Meter: string;
     Status: string;
     Accu: string;
     Air: string;
@@ -61,7 +62,7 @@ const Genset2 = () => {
                     return;
                 }
                     const defaultHeaders = ["Status Genset 800 Kva", "Accu Voltage", "Level Air Accu Genset", "Level Oil Genset", 
-                                            "Level air Radiator Genset", "Stok solar / max 500L", "Keterangan", "Petugas", "Timestamp"];
+                                            "Level air Radiator Genset", "Stok solar / max 500L", "Hour Meter", "Keterangan", "Petugas", "Timestamp"];
                         const headers = (json.table.cols || []).map((col: any, i: number) => {
                         const label = col && col.label ? String(col.label).trim() : "";
                         return label !== "" ? label : (defaultHeaders[i] ?? `col_${i}`);
@@ -105,6 +106,7 @@ const Genset2 = () => {
                     Oil: item["Level Oil Genset"] ?? "",
                     Radiator: item["Level air Radiator Genset"] ?? "",
                     Solar: item["Stok solar / max 500L"] ?? "",
+                    Meter: item["Hour Meter"] ?? "",
                     Keterangan: item.Keterangan ?? "",
                     Petugas: item.Petugas || "",
                     Timestamp: formatTimestamp(item.Timestamp),
@@ -150,6 +152,7 @@ const Genset2 = () => {
                                     <Text className="px-5 py-4 font-medium w-52 text-left">Level Oil Genset</Text>
                                     <Text className="px-5 py-4 font-medium w-60 text-left">Level air Radiator Genset</Text>
                                     <Text className="px-5 py-4 font-medium w-52 text-left">Stok solar / max 500L</Text>
+                                    <Text className="px-5 py-4 font-medium w-52 text-left">Hour Meter</Text>
                                     <Text className="px-5 py-4 font-medium w-52 text-left">Keterangan</Text>
                                     <Text className="px-5 py-4 font-medium w-52 text-left">Petugas</Text>
                                     <Text className="px-5 py-4 font-medium w-48 text-left">Timestamp</Text>
@@ -166,6 +169,7 @@ const Genset2 = () => {
                                             <Text className="px-5 py-4 w-52 text-left">{item.Oil}</Text>
                                             <Text className="px-5 py-4 w-60 text-left">{item.Radiator}</Text>
                                             <Text className="px-5 py-4 w-52 text-left">{item.Solar}</Text>
+                                            <Text className="px-5 py-4 w-52 text-left">{item.Meter}</Text>
                                             <Text className="px-5 py-4 w-52 text-left">{item.Keterangan}</Text>
                                             <Text className="px-5 py-4 w-52 text-left">{item.Petugas}</Text>
                                             <Text className="px-5 py-4 w-48 text-left">{item.Timestamp}</Text>

@@ -20,7 +20,7 @@ const InputDeepwell = () => {
 
     const handleSubmit = async () => {
         const petugasFinal = petugas === "Lainnya" ? lainnya.trim() : petugas
-        if( !tipe || !pompa || !awal || !akhir || !petugasFinal) {
+        if( !tipe || !pompa || !awal || !petugasFinal) {
             return Alert.alert("Harap isi semua kolom yang wajib (*).");
         }
         setLoading(true);
@@ -87,7 +87,7 @@ const InputDeepwell = () => {
                             <Text className="mb-3">Stand meter awal {!awal && <Text className="text-red-500">*</Text>}</Text>
                             <TextInput value={awal} onChangeText={setAwal} placeholder="Masukan stand meter awal..." className={`border ${awal ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500`} />
 
-                            <Text className="mb-3">Stand meter akhir {!akhir && <Text className="text-red-500">*</Text>}</Text>
+                            <Text className="mb-3">Stand meter akhir</Text>
                             <TextInput value={akhir} onChangeText={setAkhir} placeholder="Masukan stand meter akhir..." className={`border ${akhir ? "border-blue-500 bg-blue-100" : "border-gray-300 bg-transparent"} placeholder:text-gray-400 p-3 mb-3 rounded focus:border-blue-500`} />
 
                             <Text className="mb-3">Keterangan</Text>
