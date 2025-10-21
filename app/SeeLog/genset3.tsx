@@ -152,6 +152,7 @@ const Genset3 = () => {
                                     <Text className="px-5 py-4 font-medium w-52 text-left">Level Oil Genset</Text>
                                     <Text className="px-5 py-4 font-medium w-60 text-left">Level air Radiator Genset</Text>
                                     <Text className="px-5 py-4 font-medium w-60 text-left">Stok solar / max 1200L</Text>
+                                    <Text className="px-5 py-4 font-medium w-60 text-left">Hour Meter</Text>
                                     <Text className="px-5 py-4 font-medium w-52 text-left">Keterangan</Text>
                                     <Text className="px-5 py-4 font-medium w-52 text-left">Petugas</Text>
                                     <Text className="px-5 py-4 font-medium w-48 text-left">Timestamp</Text>
@@ -168,6 +169,7 @@ const Genset3 = () => {
                                             <Text className="px-5 py-4 w-52 text-left">{item.Oil}</Text>
                                             <Text className="px-5 py-4 w-60 text-left">{item.Radiator}</Text>
                                             <Text className="px-5 py-4 w-60 text-left">{item.Solar}</Text>
+                                            <Text className="px-5 py-4 w-60 text-left">{item.Meter}</Text>
                                             <Text className="px-5 py-4 w-52 text-left">{item.Keterangan}</Text>
                                             <Text className="px-5 py-4 w-52 text-left">{item.Petugas}</Text>
                                             <Text className="px-5 py-4 w-48 text-left">{item.Timestamp}</Text>
